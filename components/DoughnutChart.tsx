@@ -38,6 +38,7 @@ const DoughnutChart = ({ accounts }: DoughnutChartProps) => {
           dataKey="visitors"
           nameKey="browser"
           innerRadius={60}
+          outerRadius={85}
           paddingAngle={2}
         />
       </PieChart>
