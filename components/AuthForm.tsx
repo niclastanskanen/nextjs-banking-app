@@ -3,9 +3,33 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import React, { useState } from 'react'
+import { set, z } from "zod"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { useForm } from "react-hook-form"
+
+import { Button } from "@/components/ui/button"
+import { Form } from "@/components/ui/form"
+import CustomInput from './CustomInput'
+import { authFormSchema } from '@/lib/utils'
+import { Loader2 } from 'lucide-react'
 
 const AuthForm = ({ type }: { type: string }) => {
   const [user, setUser] = useState(null)
+  const [isLoading, setIsLoading] = useState(false)
+
+  const form = useForm<z.infer<typeof authFormSchema>>({
+    resolver: zodResolver(authFormSchema),
+    defaultValues: {
+      email: "",
+      password: "",
+    },
+  })
+
+  function onSubmit(values: z.infer<typeof authFormSchema>) {
+    setIsLoading(true)
+    console.log(values)
+    setIsLoading(false)
+  }
 
   return (
     <section className='auth-form'>
@@ -44,7 +68,37 @@ const AuthForm = ({ type }: { type: string }) => {
         </div>
       ) : (
         <>
-          Form
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+              <CustomInput 
+                control={form.control}
+                name='email'
+                label='Email'
+                placeholder='Enter your email'
+              />
+              <CustomInput 
+                control={form.control}
+                name='password'
+                label='Password'
+                placeholder='Enter your password'
+              />
+              <Button 
+                type="submit"
+                className='form-btn'
+                disabled={isLoading}
+              >
+                {isLoading ? (
+                  <>
+                    <Loader2 
+                      size={20} 
+                      className='animate-spin'
+                    />
+                    &nbsp;Loading...
+                  </>
+                ) : type === 'sign-in' ? 'Sign In' : 'Sign Up'}
+              </Button>
+            </form>
+          </Form>
         </>
       )}
     </section>
