@@ -3,17 +3,19 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import React, { useState } from 'react'
-import { set, z } from "zod"
+import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
+import { Loader2 } from 'lucide-react'
 
 import { Button } from "@/components/ui/button"
 import { Form } from "@/components/ui/form"
 import CustomInput from './CustomInput'
 import { authFormSchema } from '@/lib/utils'
-import { Loader2 } from 'lucide-react'
+import { useRouter } from 'next/navigation'
 
 const AuthForm = ({ type }: { type: string }) => {
+  const router = useRouter()
   const [user, setUser] = useState(null)
   const [isLoading, setIsLoading] = useState(false)
 
@@ -27,10 +29,30 @@ const AuthForm = ({ type }: { type: string }) => {
     },
   })
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
+  const onSubmit = async (data: z.infer<typeof formSchema>) => {
     setIsLoading(true)
-    console.log(values)
-    setIsLoading(false)
+
+    try {
+      // Sign up with Appwrite & create plain link token
+      if(type === 'sign-up') {
+        // const newUser = await signUp(data)
+
+        // setUser(newUser)
+      }
+
+      if(type === 'sign-in') {
+        // const response = await signIn({
+        //   email: data.email,
+        //   password: data.password
+        // })
+
+        // if(response) router.push('/')
+      }
+    } catch (error) {
+      console.log(error)
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   return (
@@ -93,6 +115,12 @@ const AuthForm = ({ type }: { type: string }) => {
                     name='address1'
                     label='Address'
                     placeholder='Enter your specific address'
+                  />
+                  <CustomInput 
+                    control={form.control}
+                    name='city'
+                    label='City'
+                    placeholder='Enter your city'
                   />
                   <div className='flex gap-4'>
                     <CustomInput 
