@@ -14,6 +14,7 @@ import CustomInput from './CustomInput'
 import { authFormSchema } from '@/lib/utils'
 import { useRouter } from 'next/navigation'
 import { signIn, signUp } from '@/lib/actions/user.actions'
+import PlaidLink from './PlaidLink'
 
 const AuthForm = ({ type }: { type: string }) => {
   const router = useRouter()
@@ -87,11 +88,11 @@ const AuthForm = ({ type }: { type: string }) => {
           </h1>
         </div>
       </header>
-      {user ? (
+      {/* {user ? ( */}
         <div className='flex flex-col gap-4'>
-          {/* PlaidLink */}
+          <PlaidLink user={user} variant='primary' />
         </div>
-      ) : (
+      {/* ) : ( */}
         <>
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
@@ -199,7 +200,7 @@ const AuthForm = ({ type }: { type: string }) => {
             </Link>
           </footer>
         </>
-      )}
+      {/* )} */}
     </section>
   )
 }
