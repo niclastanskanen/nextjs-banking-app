@@ -209,3 +209,8 @@ export const authFormSchema = (type: string) => z.object({
   email: z.string().email(),
   password: z.string().min(8),
 })
+
+export const getColorByIndex = (index: number) => {
+  const colors = ["#0747b6", "#2265d8", "#2f91fa", "#4fb3ff", "#7fcfff"]
+  return colors[index % colors.length]
+}
