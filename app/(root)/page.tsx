@@ -12,8 +12,6 @@ const Home = async ({ searchParams: { id, page } }: SearchParamProps) => {
   const accounts = await getAccounts({ 
     userId: loggedIn.$id 
   })
-  console.log('Accounts:', accounts);
-  console.log('Logged In User ID:', loggedIn.$id);
 
   if(!accounts) return;
 
