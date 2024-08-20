@@ -8,21 +8,22 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart"
-
-// Dummy data
-const chartData = [
-  { browser: "Bank 1", visitors: 1250, fill: "#0747b6" },
-  { browser: "Bank 2", visitors: 2500, fill: "#2265d8" },
-  { browser: "Bank 3", visitors: 3750, fill: "#2f91fa" },
-]
-
-const chartConfig = {
-  visitors: {
-    label: "Banks",
-  },
-}
+import { getColorByIndex } from "@/lib/utils"
 
 const DoughnutChart = ({ accounts }: DoughnutChartProps) => {
+  
+  const chartData = accounts.map((account, index) => ({
+    accountName: account.name,
+    balance: account.currentBalance,
+    fill: getColorByIndex(index),
+  }))
+
+  const chartConfig = {
+    banks: {
+      label: "Banks",
+    },
+  }
+
   return (
     <ChartContainer
       config={chartConfig}
@@ -31,12 +32,18 @@ const DoughnutChart = ({ accounts }: DoughnutChartProps) => {
       <PieChart>
         <ChartTooltip
           cursor={false}
-          content={<ChartTooltipContent hideLabel />}
+          content={
+            <ChartTooltipContent
+              labelKey="accountName"
+              nameKey="balance"
+              indicator="dot"
+            />
+          }
         />
         <Pie
           data={chartData}
-          dataKey="visitors"
-          nameKey="browser"
+          dataKey="balance"
+          nameKey="accountName"
           innerRadius={60}
           outerRadius={85}
           paddingAngle={2}
